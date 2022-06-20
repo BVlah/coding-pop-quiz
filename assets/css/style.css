@@ -1,0 +1,32 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+/* Header Styling */
+
+header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    font-size: 2rem;
+}
+
+header div {
+    flex: 1;
+    margin: 30px;
+}
+#time {
+    text-align: right;
+}
+
+header a {
+    text-decoration: none;
+    color: #c470da;
+}
+
