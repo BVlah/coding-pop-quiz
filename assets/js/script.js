@@ -5,58 +5,59 @@
 
 var timerEl = document.getElementById('timer');
 var questionsEl = document.getElementById('questions');
-var answerEl = document.getElementById('answer');
+var correctEl = document.getElementById('correct');
 var questionIdCounter = 0;
+var timeLeft = "";
 var questions = [
     {
         question: "Commonly used data types do NOT include:",
-        answers: {
-            1: "1. strings",
-            2: "2. booleans",
-            3: "3. alerts",
-            4: "4. integers"
-        },
-        correctAnswer: "3"
+        answers: [
+            "1. strings",
+            "2. booleans",
+            "3. alerts",
+            "4. integers"
+        ],
+        correctAnswer: 2
     },
     {
         question: "The condition in an if/else statement is enclosed with ______.",
         answers: {
-            1: "1. quotes",
-            2: "2. curly brackets",
-            3: "3. parenthesis",
-            4: "4. square brackets"
+            0: "1. quotes",
+            1: "2. curly brackets",
+            2: "3. parenthesis",
+            3: "4. square brackets"
         },
-        correctAnswer: "3"
+        correctAnswer: 2
     },
     {
         question: "Arrays in JavaScript can be used to store ______.",
         answers: {
-            1: "1. numbers and strings",
-            2: "2. other arrays",
-            3: "3. booleans",
-            4: "4. all of the above"
+            0: "1. numbers and strings",
+            1: "2. other arrays",
+            2: "3. booleans",
+            3: "4. all of the above"
         },
-        correctAnswer: "4"
+        correctAnswer: 3
     },
     {
         question: "String values must be enclosed within ______ when being assigned to variables.",
         answers: {
-            1: "1. commas",
-            2: "2. curly brackets",
-            3: "3. quotes",
-            4: "4. parenthesis"
+            0: "1. commas",
+            1: "2. curly brackets",
+            2: "3. quotes",
+            3: "4. parenthesis"
         },
-        correctAnswer: "3"
+        correctAnswer: 2
     },
     {
         question: "A very useful tool used during development and debugging for printing content to the debugger is:",
         answers: {
-            1: "1. JavaScript",
-            2: "2. terminal/bash",
-            3: "3. for loops",
-            4: "4. console.log"
+            0: "1. JavaScript",
+            1: "2. terminal/bash",
+            2: "3. for loops",
+            3: "4. console.log"
         },
-        correctAnswer: "4"
+        correctAnswer: 3
     }
 ];
 
@@ -79,9 +80,46 @@ function timer() {
 // Quiz Stuff
     // 5 Questions
     // On click move to next question
-    // End of questions or when timer runs out give prompt to submit info 
+    // End of questions or when timer runs out give prompt to submit info
 
-var startScreenEl = function () {
+var addQuestion = function() {
+    if (questionIdCounter < questions.length) {
+        var questionEl = document.createElement("h2");
+
+        questionEl.className = "question-heading";
+        questionEl.innerHTML = questions[questionIdCounter].question;
+        questionsEl.appendChild(questionEl);
+
+        // Create Answer Choices
+        var answerContainerEl = document.createElement("ul");
+
+        answerContainerEl.className = "answer-container";
+        questionsEl.appendChild(answerContainerEl);
+
+        for (var i=0; i < questions[questionIdCounter].answers.length; i++) {
+            var answersEl = document.createElement("li");
+            console.log(answersEl);
+
+            answersEl.className = "answer-choice";
+            answersEl.setAttribute("data-task-id", i);
+            answersEl.innerHTML = "<button class='btn answer-button'>" + questions[questionIdCounter].answers[i] + "</button>";
+            answerContainerEl.appendChild(answersEl);
+        }
+    }
+}
+
+var clearQuiz = function() {
+    // Remove Starting Screen
+    var removeStart = document.getElementById('questions');
+    while (removeStart.firstChild) {
+        removeStart.removeChild(removeStart.firstChild);
+    };
+
+    // Add Question
+    addQuestion();
+};
+
+var startScreenEl = function() {
     // Add header
     var headerEl = document.createElement("h2");
 
@@ -100,9 +138,14 @@ var startScreenEl = function () {
     var startButtonEl = document.createElement("button");
 
     startButtonEl.className = "btn start-btn";
+    startButtonEl.setAttribute("id","start-button");
     startButtonEl.innerHTML = "Start Quiz";
     questionsEl.appendChild(startButtonEl);
+
+    // Start the Quiz
+    var startButtonEl = document.getElementById('start-button');
+    startButtonEl.addEventListener("click", clearQuiz);
+    startButtonEl.addEventListener("click", timer);
 };
 
-timer();
 startScreenEl();
