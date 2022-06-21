@@ -21,42 +21,42 @@ var questions = [
     },
     {
         question: "The condition in an if/else statement is enclosed with ______.",
-        answers: {
-            0: "1. quotes",
-            1: "2. curly brackets",
-            2: "3. parenthesis",
-            3: "4. square brackets"
-        },
+        answers: [
+            "1. quotes",
+            "2. curly brackets",
+            "3. parenthesis",
+            "4. square brackets"
+        ],
         correctAnswer: 2
     },
     {
         question: "Arrays in JavaScript can be used to store ______.",
-        answers: {
-            0: "1. numbers and strings",
-            1: "2. other arrays",
-            2: "3. booleans",
-            3: "4. all of the above"
-        },
+        answers: [
+            "1. numbers and strings",
+            "2. other arrays",
+            "3. booleans",
+            "4. all of the above"
+        ],
         correctAnswer: 3
     },
     {
         question: "String values must be enclosed within ______ when being assigned to variables.",
-        answers: {
-            0: "1. commas",
-            1: "2. curly brackets",
-            2: "3. quotes",
-            3: "4. parenthesis"
-        },
+        answers: [
+            "1. commas",
+            "2. curly brackets",
+            "3. quotes",
+            "4. parenthesis"
+        ],
         correctAnswer: 2
     },
     {
         question: "A very useful tool used during development and debugging for printing content to the debugger is:",
-        answers: {
-            0: "1. JavaScript",
-            1: "2. terminal/bash",
-            2: "3. for loops",
-            3: "4. console.log"
-        },
+        answers: [
+            "1. JavaScript",
+            "2. terminal/bash",
+            "3. for loops",
+            "4. console.log"
+        ],
         correctAnswer: 3
     }
 ];
@@ -82,6 +82,15 @@ function timer() {
     // On click move to next question
     // End of questions or when timer runs out give prompt to submit info
 
+
+var clearQuiz = function() {
+    // Remove Starting Screen
+    var removeStart = document.getElementById('questions');
+    while (removeStart.firstChild) {
+        removeStart.removeChild(removeStart.firstChild);
+    };
+};
+
 var addQuestion = function() {
     if (questionIdCounter < questions.length) {
         var questionEl = document.createElement("h2");
@@ -98,25 +107,26 @@ var addQuestion = function() {
 
         for (var i=0; i < questions[questionIdCounter].answers.length; i++) {
             var answersEl = document.createElement("li");
-            console.log(answersEl);
-
+            
             answersEl.className = "answer-choice";
             answersEl.setAttribute("data-task-id", i);
             answersEl.innerHTML = "<button class='btn answer-button'>" + questions[questionIdCounter].answers[i] + "</button>";
             answerContainerEl.appendChild(answersEl);
         }
-    }
-}
-
-var clearQuiz = function() {
-    // Remove Starting Screen
-    var removeStart = document.getElementById('questions');
-    while (removeStart.firstChild) {
-        removeStart.removeChild(removeStart.firstChild);
     };
+};
 
-    // Add Question
-    addQuestion();
+var quizButtonHandler = function(event) {
+    if (event.target.matches(".start-btn")) {
+        timer();
+        clearQuiz();
+        addQuestion();
+    }
+    else if (event.target.matches(".answer-button")) {
+        questionIdCounter++;
+        clearQuiz();
+        addQuestion();
+    };
 };
 
 var startScreenEl = function() {
@@ -144,8 +154,9 @@ var startScreenEl = function() {
 
     // Start the Quiz
     var startButtonEl = document.getElementById('start-button');
-    startButtonEl.addEventListener("click", clearQuiz);
+    startButtonEl.addEventListener("click", addQuestion);
     startButtonEl.addEventListener("click", timer);
 };
 
+questionsEl.addEventListener("click", quizButtonHandler);
 startScreenEl();
