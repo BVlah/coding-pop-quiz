@@ -197,9 +197,17 @@ var saveScore = function() {
     savedScore = {Initials: initialsInput, Score: playerScore};
     savedScores.push(savedScore);
     localStorage.setItem("savedScores", JSON.stringify(savedScores));
-
+    console.log(localStorage);
     highScores();
 };
+
+var loadScores = function() {
+    var pulledScores = localStorage.getItem("savedScores");
+    if (!pulledScores) {
+        return false;
+    }
+    savedScores = JSON.parse(pulledScores);
+}
 
 // Prevent default browser action on High Scores Button click
 var highScoreButton = function(event) {
@@ -218,30 +226,22 @@ var highScores = function() {
     var scoreListEl = document.createElement("ol");
     questionsEl.appendChild(scoreListEl);
 
-    // Pull Scores from Local Server
-    var pulledScores = localStorage.getItem("savedScores");
-    if (!pulledScores) {
-        return false;
-    }
-    pulledScores = JSON.parse(pulledScores);
-
     // sort scores descending
-    pulledScores.sort(function(a,b) {
+    savedScores.sort(function(a,b) {
         return b.Score - a.Score
     });
 
-
     //Parse Scores
-    for (var i=0; i < pulledScores.length; i++) {
+    for (var i=0; i < savedScores.length; i++) {
         var scoresEl = document.createElement("li");
         scoresEl.setAttribute("class","high-scores");
-        scoresEl.innerHTML = pulledScores[i].Initials + " - " + pulledScores[i].Score;
+        scoresEl.innerHTML = savedScores[i].Initials + " - " + savedScores[i].Score;
         scoreListEl.appendChild(scoresEl);
     }
-
-}
+};
 
 // Default Function Calls and Event Listeners
 questionsEl.addEventListener("click", buttonHandler);
 highScoresEl.addEventListener("click", highScoreButton);
 startScreenEl();
+loadScores();
