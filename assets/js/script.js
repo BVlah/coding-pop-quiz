@@ -31,12 +31,12 @@ var questions = [
         correctAnswer: "0"
     },
     {
-        question: "Question",
+        question: "What is Javascript",
         answers: [
-            "1. 2",
-            "2. 3",
-            "3. 4",
-            "4. 1"
+            "1. A Font",
+            "2. One of the 3 foundational programming languages",
+            "3. A type of coffee",
+            "4. All of the Above"
         ],
         correctAnswer: "1"
     },
@@ -60,6 +60,7 @@ var instructionsEl = document.getElementById('instructions');
 var correctEl = document.getElementById('correct');
 var resultBoxEl = document.getElementById('result');
 var formEl = document.getElementById('score-form');
+var scoreListEl = document.getElementById("score-list");
 var highScoresEl = document.getElementById('high-scores');
 
 var questionIdCounter = 0;
@@ -141,6 +142,18 @@ var buttonHandler = function(event) {
     else if (event.target.matches(".score-btn")) {
         saveScore();
     }
+
+    //Back Button
+    else if (event.target.matches(".back-btn")) {
+        location.reload();
+    }
+
+    //Clear Scores Button
+    else if (event.target.matches(".clear-scores-btn")) {
+        scoreListEl.innerHTML = "";
+        savedScores = [];
+        localStorage.setItem("savedScores", JSON.stringify(savedScores));
+    }
 };
 
 // Generate Questions
@@ -216,15 +229,12 @@ var highScoreButton = function(event) {
 }
 // Pull scores into and create High Scores table
 var highScores = function() {
-    //Clean up Page
+    // Clean up Page
     formEl.innerHTML="";
     headerEl.className = "center question-heading";
     headerEl.innerHTML = "High Scores";
     instructionsEl.innerHTML = "";
     timeLeft = "";
-
-    var scoreListEl = document.createElement("ol");
-    questionsEl.appendChild(scoreListEl);
 
     // sort scores descending
     savedScores.sort(function(a,b) {
@@ -238,6 +248,15 @@ var highScores = function() {
         scoresEl.innerHTML = savedScores[i].Initials + " - " + savedScores[i].Score;
         scoreListEl.appendChild(scoresEl);
     }
+
+    //Add Buttons
+    var backButtonEl = document.createElement("div");
+    backButtonEl.innerHTML = "<button class='btn back-btn' id='back'>Back</button>"
+    questionsEl.appendChild(backButtonEl);
+
+    var clearScoresEl = document.createElement("div");
+    clearScoresEl.innerHTML = "<button class='btn clear-scores-btn' id='clear-score'>Clear Scores</button>"
+    questionsEl.appendChild(clearScoresEl);
 };
 
 // Default Function Calls and Event Listeners

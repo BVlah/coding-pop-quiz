@@ -15,7 +15,6 @@ body {
 }
 
 /* Header Styling */
-
 header {
     display: flex;
     flex-wrap: wrap;
@@ -37,14 +36,13 @@ header a {
 }
 
 /* Main Styling */
-
 main {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 }
 
-#quiz {
+.quiz {
     margin-top: 3.5%;
     width: 60%;
 }
@@ -67,6 +65,7 @@ main {
     list-style: none;
 }
 
+/* Form Styling */
 form {
     display: flex;
     flex-wrap: wrap;
@@ -89,6 +88,7 @@ form input {
     border: 2px solid var(--grey);
 }
 
+/* Button Styling */
 .btn {
     margin-top: 1.5%;
     outline: none;
@@ -111,7 +111,7 @@ form input {
     text-align: left;
 }
 
-.score-btn {
+.score-btn, .back-btn, .clear-scores-btn {
     font-size: 2vw;
     padding: 5%;
     width: max-content;
@@ -121,6 +121,8 @@ form input {
     background-color: var(--secondary);
 }
 
+
+/* Answer Result Styling */
 .result {
     border-top: 1px solid var(--grey);
     margin-top: 5%;
@@ -133,3 +135,5 @@ form input {
     font-style: italic;
     font-weight: lighter;
 }
+
+/* High Scores Styling */
