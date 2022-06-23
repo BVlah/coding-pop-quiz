@@ -70,21 +70,24 @@ main {
 form {
     display: flex;
     flex-wrap: wrap;
-    align-items: flex-end;
+    align-items: center;
 }
+
+.form-text {
+    font-size: 2vw;
+}
+
+.score-form:not(:first-child) {
+    margin-left: 3%;
+} 
 
 form input {
     outline: none;
     border: none;
     padding: .5%;
-    font-size: 2rem;
+    font-size: 2vw;
     border: 2px solid var(--grey);
-  }
-
-  form .score-form {
-    margin: 10px 6px 10px 0;
-    flex: 1;
-  }
+}
 
 .btn {
     margin-top: 1.5%;
@@ -106,6 +109,12 @@ form input {
     font-size: 1.75vw;
     width: 35%;
     text-align: left;
+}
+
+.score-btn {
+    font-size: 2vw;
+    padding: 5%;
+    width: max-content;
 }
 
 .btn:hover {
