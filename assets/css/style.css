@@ -49,19 +49,42 @@ main {
     width: 60%;
 }
 
-.instructions {
+.center {
     text-align: center;
+}
+
+.instructions {
     font-size: 2vw;
     margin-bottom: 20px;
 }
 
 .question-heading {
+    margin-bottom: 20px;
     font-size: 3vw;
 }
 
 .answer-container {
     list-style: none;
 }
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+form input {
+    outline: none;
+    border: none;
+    padding: .5%;
+    font-size: 2rem;
+    border: 2px solid var(--grey);
+  }
+
+  form .score-form {
+    margin: 10px 6px 10px 0;
+    flex: 1;
+  }
 
 .btn {
     margin-top: 1.5%;
@@ -87,4 +110,17 @@ main {
 
 .btn:hover {
     background-color: var(--secondary);
+}
+
+.result {
+    border-top: 1px solid var(--grey);
+    margin-top: 5%;
+}
+
+.result h2 {
+    margin-top: 3%;
+    color: var(--grey);
+    font-size: 2.5vw;
+    font-style: italic;
+    font-weight: lighter;
 }

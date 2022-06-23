@@ -5,9 +5,14 @@
 
 var timerEl = document.getElementById('timer');
 var questionsEl = document.getElementById('questions');
+var headerEl = document.getElementById('question');
+var instructionsEl = document.getElementById('instructions');
 var correctEl = document.getElementById('correct');
+var formEl = document.getElementById('score-form');
+
 var questionIdCounter = 0;
-var timeLeft = "";
+var timeLeft = 75;
+
 var questions = [
     {
         question: "Commonly used data types do NOT include:",
@@ -17,7 +22,7 @@ var questions = [
             "3. alerts",
             "4. integers"
         ],
-        correctAnswer: 2
+        correctAnswer: "2"
     },
     {
         question: "The condition in an if/else statement is enclosed with ______.",
@@ -27,7 +32,7 @@ var questions = [
             "3. parenthesis",
             "4. square brackets"
         ],
-        correctAnswer: 2
+        correctAnswer: "2"
     },
     {
         question: "Arrays in JavaScript can be used to store ______.",
@@ -37,7 +42,7 @@ var questions = [
             "3. booleans",
             "4. all of the above"
         ],
-        correctAnswer: 3
+        correctAnswer: "3"
     },
     {
         question: "String values must be enclosed within ______ when being assigned to variables.",
@@ -47,7 +52,7 @@ var questions = [
             "3. quotes",
             "4. parenthesis"
         ],
-        correctAnswer: 2
+        correctAnswer: "2"
     },
     {
         question: "A very useful tool used during development and debugging for printing content to the debugger is:",
@@ -57,92 +62,117 @@ var questions = [
             "3. for loops",
             "4. console.log"
         ],
-        correctAnswer: 3
+        correctAnswer: "3"
     }
 ];
 
-function timer() {
-    var timeLeft = 75;
-    
-    var timeInterval = setInterval(function (){
-        if (timeLeft >1) {
+var submitScore = function () {
+
+    // Stop Timer and Set Score
+    var score = timeLeft;
+    timerEl.textContent = score;
+    clearInterval(timeInterval);
+
+    // Remove Last Buttons and Correct/Incorrect Text
+    for (var i=0; i < questions[questions.length-1].answers.length; i++) {
+        var removeButtonEl = document.querySelector(".answer-choice[data-id='" + i + "']");
+        removeButtonEl.innerHTML = "";
+    };
+
+    // Update Page Text
+    headerEl.innerHTML = "All Done"
+    instructionsEl.className = "instructions";
+    instructionsEl.innerHTML = "Your final score is " + score;
+
+    // Create Form
+    formEl.innerHTML ="<p class='instructions'>Enter Initials: </p><input type='text' name='player-initials' />"
+    console.log(formEl);
+};
+
+
+// Timer
+function timer() {    
+    timeInterval = setInterval(function (){
+        if (timeLeft >0) {
             timerEl.textContent = timeLeft
             timeLeft--;
         }
         else {
             timerEl.textContent = 0;
             clearInterval(timeInterval);
-            // submitScore();
+
+            submitScore();
         };
     }, 1000);
 };
 
-// Quiz Stuff
-    // 5 Questions
-    // On click move to next question
-    // End of questions or when timer runs out give prompt to submit info
-
-
-var clearQuiz = function() {
-    // Remove Starting Screen
-    var removeStart = document.getElementById('questions');
-    while (removeStart.firstChild) {
-        removeStart.removeChild(removeStart.firstChild);
-    };
-};
-
+// Question Control
 var addQuestion = function() {
     if (questionIdCounter < questions.length) {
-        var questionEl = document.createElement("h2");
+        // Update Page Text
+        headerEl.className = "question-heading";
+        headerEl.innerHTML = questions[questionIdCounter].question;
+        // questionsEl.appendChild(headerEl);
 
-        questionEl.className = "question-heading";
-        questionEl.innerHTML = questions[questionIdCounter].question;
-        questionsEl.appendChild(questionEl);
-
+        instructionsEl.innerHTML = "";
+        
         // Create Answer Choices
-        var answerContainerEl = document.createElement("ul");
-
-        answerContainerEl.className = "answer-container";
-        questionsEl.appendChild(answerContainerEl);
-
         for (var i=0; i < questions[questionIdCounter].answers.length; i++) {
-            var answersEl = document.createElement("li");
-            
-            answersEl.className = "answer-choice";
-            answersEl.setAttribute("data-task-id", i);
-            answersEl.innerHTML = "<button class='btn answer-button'>" + questions[questionIdCounter].answers[i] + "</button>";
-            answerContainerEl.appendChild(answersEl);
-        }
-    };
+            var answersEl = document.querySelector(".answer-choice[data-id='" + i + "']");
+            answersEl.innerHTML = "<button class='btn answer-button' data-task-id=" + i +">" + questions[questionIdCounter].answers[i] + "</button>";
+        };
+    }
+    else {
+        submitScore();
+    }
 };
 
 var quizButtonHandler = function(event) {
     if (event.target.matches(".start-btn")) {
+        // remove start button
+        questionsEl.removeChild(questionsEl.lastChild);
+        
+        // Start Quiz
         timer();
-        clearQuiz();
         addQuestion();
     }
     else if (event.target.matches(".answer-button")) {
+
+        var answerId = event.target.getAttribute("data-task-id");
+        
+        // Determine if Correct or Incorrect answer choice
+        if (answerId === questions[questionIdCounter].correctAnswer) {
+            //
+            correctEl.innerHTML = "Correct!"
+
+            var myTimer = setInterval(function (){
+                correctEl.innerHTML = ""
+            }, 2000);
+        }
+        else {
+            correctEl.innerHTML = "Wrong!"
+
+            var myTimer = setInterval(function (){
+                correctEl.innerHTML = ""
+            }, 2000);
+
+            timeLeft -= 10;
+        };
+
+        // Move to Next Question
         questionIdCounter++;
-        clearQuiz();
         addQuestion();
     };
 };
 
 var startScreenEl = function() {
-    // Add header
-    var headerEl = document.createElement("h2");
-
-    headerEl.className = "instructions question-heading";
+    // Update header
+    headerEl.className = "center question-heading";
     headerEl.innerHTML = "Coding Quiz Challenge";
-    questionsEl.appendChild(headerEl);
 
-    // Add instructions text
-    var instructionsEl = document.createElement("p");
-
-    instructionsEl.className = "instructions";
+    // Update Instructions
+    instructionsEl.className = "center instructions";
     instructionsEl.innerHTML = "Try to answer the following code related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!"
-    questionsEl.appendChild(instructionsEl);
 
     // Add start button
     var startButtonEl = document.createElement("button");
@@ -151,12 +181,8 @@ var startScreenEl = function() {
     startButtonEl.setAttribute("id","start-button");
     startButtonEl.innerHTML = "Start Quiz";
     questionsEl.appendChild(startButtonEl);
-
-    // Start the Quiz
-    var startButtonEl = document.getElementById('start-button');
-    startButtonEl.addEventListener("click", addQuestion);
-    startButtonEl.addEventListener("click", timer);
 };
 
 questionsEl.addEventListener("click", quizButtonHandler);
+// formEl.addEventListener("submit", recordHighScore);
 startScreenEl();

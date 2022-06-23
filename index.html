@@ -9,7 +9,7 @@
 </head>
 <body>
     <header>
-        <div id="highscore">
+        <div>
             <a href="./highscores.html">View high scores</a>
         </div>
         <div id="time">
@@ -21,8 +21,24 @@
 
     <main>
         <div id="quiz">
-            <div id="questions"></div>
-            <div id="answer"></div>    
+            <div id="questions">
+                <h2 id="question"></h2>
+                <p id="instructions"></p>
+                <ul class="answer-container">
+                    <li class = "answer-choice" data-id="0"></li>
+                    <li class = "answer-choice" data-id="1"></li>
+                    <li class = "answer-choice" data-id="2"></li>
+                    <li class = "answer-choice" data-id="3"></li>
+                </ul>
+                <form id="score-form">
+                    <div class="score-form" id="form-text"></div>
+                    <div class="score-form" id="form-initials"></div>
+                    <div class="score-form" id="form-submit"></div>
+                </form>
+            </div>
+            <div class="result" id="result" data-state="hidden">
+                <h2 id="correct"></h2>
+            </div>    
         </div>
     </main>
 
